@@ -31,3 +31,18 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 
 Serves the build folder using a static server.<br>
 Open [http://localhost:5000](http://localhost:5000) to view it in the browser.
+
+
+### sgithens notes
+
+The npm serve doens't seem to work well in it's current configuration after changing
+the homepage options in package.json, so we can test the static build with the below:
+
+```bash
+npm run build
+cp -R build quickstrip-customization
+python -m SimpleHTTPServer 5000
+```
+
+Also, for some reason the app doesn't seem to work on higher ports. If you used this
+on port 8080, the js throws up all sorts of recursive rendering errors.

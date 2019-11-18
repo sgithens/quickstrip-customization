@@ -51,6 +51,15 @@ const DragDropContainer: React.FC<DragDropContainerProps> = ({
   allChoicesList: acl = [],
 }) => {
   const [cookies, setCookie] = useCookies([BUTTON_LIST]);
+  // var sgithensTestLoad = ["cloud-folder-open", "high-contrast"];
+  // setCookie(BUTTON_LIST, sgithensTestLoad, COOKIE_OPTIONS);
+  // TODO
+  // We need to add a hook here, such that the initial data can be loaded from other
+  // sources or overridden. In addition to a cookie, it may be necessary to make an ajax
+  // call here, or a call to a function, or a function returning a promise, etc.  It should
+  // something that can be customized without too much trouble. - sgithens
+
+
   const [myobList, setMYOBList] = React.useState<MYOButtonInterface[]>(cookies[BUTTON_LIST] ? cookies[BUTTON_LIST].filter((b: any) => typeof b !== 'string') : []);
   const [allChoicesList, setAllChoicesList] = React.useState<ListItemInterface[]>([...acl, ...myobList.map(m => mYODataToListItem(m))]);
   const [holdingBoxList, setHoldingBoxList] = React.useState<ListItemInterface[]>([]);
@@ -275,10 +284,16 @@ const DragDropContainer: React.FC<DragDropContainerProps> = ({
   };
   const focusMenuItem = (el: any) => Boolean(anchorEl) && el && el.focus();
   const onSave = () => {
-    setCookie(BUTTON_LIST, quickstripList.map(item => {
+    var valueToSave = quickstripList.map(item => {
       const myob = myobList.find(m => m.buttonName === item.id);
       return myob ? myob : item.id;
-    }), COOKIE_OPTIONS);
+    });
+    setCookie(BUTTON_LIST, valueToSave, COOKIE_OPTIONS);
+    console.log("Sgithens DragDropContainer onSave", valueToSave);
+    // TODO See notes further above, but again we need a customizable way
+    // to save the data, and then close this window (or potentially perform
+    // a redirect), and then potentially return an error if the save
+    // didn't work. Should be easy to override. -sgithens
     window.close();
   };
   const handleMakeYourOwnSubmit = (buttonData?: MYOButtonInterface) => {
